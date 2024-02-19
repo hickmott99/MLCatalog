@@ -1,0 +1,9 @@
+setup.py
+MLCatalog/__init__.py
+MLCatalog/config.py
+MLCatalog/model.py
+MLCatalog.egg-info/PKG-INFO
+MLCatalog.egg-info/SOURCES.txt
+MLCatalog.egg-info/dependency_links.txt
+MLCatalog.egg-info/not-zip-safe
+MLCatalog.egg-info/top_level.txt
