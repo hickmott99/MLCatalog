@@ -75,27 +75,27 @@ function AddModelForm() {
                 )}
                 <div className="form-group mb-2">
                     <label htmlFor="datasetName">Dataset Name</label>
-                    <input type="text" className="form-control" id="datasetName" name="datasetName" placeholder={'e.g. "Mnist"'} value={modelDetails.datasetName} onChange={handleChange} required />
+                    <input type="text" className="form-control" id="datasetName" name="datasetName" placeholder={"e.g. 'Mnist'"} value={modelDetails.datasetName} onChange={handleChange} required />
                 </div>
                 <div className="form-group mb-2">
                     <label htmlFor="runDatetime">Run Datetime</label>
-                    <input type="text" className="form-control" id="runDatetime" name="runDatetime" placeholder={'e.g. 2024-02-19 17:00:00'} value={modelDetails.runDatetime} onChange={handleChange} />
+                    <input type="text" className="form-control" id="runDatetime" name="runDatetime" placeholder={"e.g. '2024-02-19 17:00:00'"} value={modelDetails.runDatetime} onChange={handleChange} />
                 </div>
                 <div className="form-group mb-2">
                     <label htmlFor="modelMetric">Model Metric</label>
-                    <input type="text" className="form-control" id="modelMetric" name="modelMetric" placeholder={'e.g. "euclidean"'} value={modelDetails.modelMetric} onChange={handleChange} />
+                    <input type="text" className="form-control" id="modelMetric" name="modelMetric" placeholder={"e.g. 'euclidean'"} value={modelDetails.modelMetric} onChange={handleChange} />
                 </div>
                 <div className="form-group mb-2">
                     <label htmlFor="modelPath">Model Path</label>
-                    <input type="text" className="form-control" id="modelPath" name="modelPath" placeholder={'e.g. “/path/to/model/on/disk”'} value={modelDetails.modelPath} onChange={handleChange} />
+                    <input type="text" className="form-control" id="modelPath" name="modelPath" placeholder={"e.g. '/path/to/model/on/disk'"} value={modelDetails.modelPath} onChange={handleChange} />
                 </div>
                 <div className="form-group mb-2">
                     <label htmlFor="trainingLoss">Training Loss</label>
-                    <input type="number" className="form-control" id="trainingLoss" name="trainingLoss" value={modelDetails.trainingLoss} onChange={handleChange} />
+                    <input type="number" className="form-control" id="trainingLoss" name="trainingLoss" placeholder={'e.g. 0.134'} value={modelDetails.trainingLoss} onChange={handleChange} />
                 </div>
                 <div className="form-group mb-2">
                     <label htmlFor="validationLoss">Validation Loss</label>
-                    <input type="number" className="form-control" id="validationLoss" name="validationLoss" value={modelDetails.validationLoss} onChange={handleChange} />
+                    <input type="number" className="form-control" id="validationLoss" name="validationLoss" placeholder={'e.g. 0.264'} value={modelDetails.validationLoss} onChange={handleChange} />
                 </div>
                 <div className="form-group mb-2">
                     <label htmlFor="notes">Notes</label>
