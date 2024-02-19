@@ -6,33 +6,9 @@
 // merge with existing $theme-colors map
 $theme-colors: map-merge($theme-colors, (
     "second-primary": #cfd4da,
-    // "second-primary": #eaf1fb,
+    "secondary-dark": #cccfd1
 ));
 
-.bg-yellow {
-    background-color: $yellow !important;
-}
-
-.bg-green {
-    background-color: $green !important;
-}
-
-.bg-red{
-    background-color: $red !important;
-
-}
-
-.bg-blue{
-    background-color: $blue !important;
-}
-
-.bg-orange{
-    background-color: $orange !important;
-}
-
-.bg-purple{
-    background-color: $purple !important;
-}
 
 // set changes
 @import "bootstrap";

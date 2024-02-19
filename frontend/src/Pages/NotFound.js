@@ -1,7 +1,10 @@
 import React from "react";
 
-function NotFound() {
-    return <h2>Page Not Found</h2>
-}
 
-export {NotFound}
+export function NotFound() {
+    return (
+        <div className="d-flex justify-content-center align-items-center mt-2">
+            <h1>Page Not Found</h1>
+        </div>
+    )
+}

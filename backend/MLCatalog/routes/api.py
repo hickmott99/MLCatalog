@@ -106,7 +106,6 @@ def add_model():
         flask.abort(500)  
 
 
-
 @MLCatalog.app.route("/api/v1/models/", methods=['GET'])
 def get_models():
     connection = MLCatalog.model.get_db()
@@ -119,8 +118,12 @@ def get_models():
     filter_conditions = []
     for column in allowed_toggle_fields:
         if column in request.args:
-            filter_conditions.append(f"{column} = ?")
-            query_params.append(request.args[column])
+            # Adjust the condition to use LIKE with wildcards
+            if column in ['datasetName', 'modelPath', 'modelMetric', 'notes']:  # Columns you want case-insensitive comparison
+                filter_conditions.append(f"{column} LIKE ? COLLATE NOCASE")
+            else:
+                filter_conditions.append(f"{column} LIKE ?")
+            query_params.append(f"%{request.args[column]}%")  # Add % before and after the search term
     
     if filter_conditions:
         query += " WHERE " + " AND ".join(filter_conditions)
@@ -140,11 +143,89 @@ def get_models():
 
     cur = connection.execute(query, query_params)
     models = cur.fetchall()
-
-    if not models:
-        flask.abort(404)
     
     return jsonify(models)
+
+# @MLCatalog.app.route("/api/v1/models/", methods=['GET'])
+# def get_models():
+#     connection = MLCatalog.model.get_db()
+    
+#     query = "SELECT * FROM Models"
+#     query_params = []
+    
+#     allowed_toggle_fields = ['modelID', 'datasetName', 'runDatetime', 'modelMetric', 'modelPath', 'trainingLoss', 'validationLoss', 'notes', 'favorite']
+#     # Filtering
+#     filter_conditions = []
+#     for column in allowed_toggle_fields:
+#         if column in request.args:
+#             # Adjust the condition to use LIKE with wildcards
+#             filter_conditions.append(f"{column} LIKE ?")
+#             query_params.append(f"%{request.args[column]}%")  # Add % before and after the search term
+    
+#     if filter_conditions:
+#         query += " WHERE " + " AND ".join(filter_conditions)
+
+    
+#     # Sorting TODO: add per column sort order functionality
+#     sort_by_fields = request.args.getlist('sort_by')
+
+#     order_by_clause = []
+#     sort_order = request.args.get('sort_order', 'ASC').upper() 
+#     for field  in sort_by_fields:
+#         if field in allowed_toggle_fields:
+#             order_by_clause.append(f"{field} {sort_order}")
+    
+#     if order_by_clause:
+#         query += " ORDER BY " + ", ".join(order_by_clause)
+
+#     cur = connection.execute(query, query_params)
+#     models = cur.fetchall()
+
+#     if not models:
+#         flask.abort(404)
+    
+#     return jsonify(models)
+
+
+
+# @MLCatalog.app.route("/api/v1/models/", methods=['GET'])
+# def get_models():
+#     connection = MLCatalog.model.get_db()
+    
+#     query = "SELECT * FROM Models"
+#     query_params = []
+    
+#     allowed_toggle_fields = ['modelID', 'datasetName', 'runDatetime', 'modelMetric', 'modelPath', 'trainingLoss', 'validationLoss', 'notes', 'favorite']
+#     # Filtering
+#     filter_conditions = []
+#     for column in allowed_toggle_fields:
+#         if column in request.args:
+#             filter_conditions.append(f"{column} = ?")
+#             query_params.append(request.args[column])
+    
+#     if filter_conditions:
+#         query += " WHERE " + " AND ".join(filter_conditions)
+
+    
+#     # Sorting TODO: add per column sort order functionality
+#     sort_by_fields = request.args.getlist('sort_by')
+
+#     order_by_clause = []
+#     sort_order = request.args.get('sort_order', 'ASC').upper() 
+#     for field  in sort_by_fields:
+#         if field in allowed_toggle_fields:
+#             order_by_clause.append(f"{field} {sort_order}")
+    
+#     if order_by_clause:
+#         query += " ORDER BY " + ", ".join(order_by_clause)
+
+#     cur = connection.execute(query, query_params)
+#     models = cur.fetchall()
+
+#     if not models:
+#         flask.abort(404)
+    
+#     return jsonify(models)
 
     # Test
 

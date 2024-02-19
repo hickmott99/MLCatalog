@@ -17,3 +17,7 @@ code {
   border-bottom: 1px #f8f9fa !important;
 }
 
+.rounded-right{
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
