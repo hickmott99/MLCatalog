@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchModelsAsync } from '../features/models/modelSlice';
 import { Loading } from '../app/Loader';
 import { generateQueryString, parseQueryString } from '../app/utils';
-import { API_UPDATE_MODEL } from '../constants/constants';
+import { API_UPDATE_MODEL, API_DELETE_MODEL } from '../constants/constants';
 
 
 function FilterInput({placeholder="", targetColumn, handleFilterChange, value="", favoriteToggleFilter}){
@@ -40,12 +40,21 @@ function FilterInput({placeholder="", targetColumn, handleFilterChange, value=""
 }
 
 
-function ModelsGrid({ models, toggleFavoriteUpdate }) {
+function ModelsGrid({ models, toggleFavoriteUpdate, deleteModel }) {
     return (
         <>
         {models.map((model, index) => (
           <div className={`row align-items-center border ${index % 2 === 0 ? 'bg-light' : 'bg-white'}`} key={index}>
-            <div className="col-2">{model.datasetName}</div>
+            <div className="col-2 d-flex align-items-center">
+                <span 
+                    className="btn d-flex align-items-center me-4" 
+                    aria-label="Toggle Favorite" 
+                >
+                    <i className="bi bi-trash ms-1" onClick={() => deleteModel(model.modelID)}></i>
+                    
+                </span>
+                {model.datasetName}
+            </div>
             <div className="col">{model.modelMetric}</div>
             <div className="col">{model.modelPath}</div>
             <div className="col">{model.trainingLoss && model.trainingLoss.toFixed(3)}</div>
@@ -80,6 +89,24 @@ function FilterModelsGrid() {
 
     const [sortDirection, setSortDirection] = useState('');
     const [sortedColumn, setSortedColumn] = useState('');
+
+    const deleteModel = async (id) => {
+        if (window.confirm('Are you sure you want to delete this model?')) {
+            try {
+                const response = await fetch(API_DELETE_MODEL + id + "/", {
+                    method: 'DELETE',
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Error deleting model: ${response.status}`);
+                }
+                const query_string = generateQueryString(current_filters);
+                dispatch(fetchModelsAsync(query_string));
+            } catch (error) {
+                console.error('Error during DELETE fetch:', error);
+            }
+        }
+    }
 
     const handleFilterChange = (e, targetColumn) => {
         const cur_text = e.target.value;
@@ -143,6 +170,7 @@ function FilterModelsGrid() {
         dispatch(fetchModelsAsync(query_string));
     };
 
+
     const SortColumnLabel = ({title, targetColumn}) => {
         return (
             <>
@@ -166,22 +194,22 @@ function FilterModelsGrid() {
     return (
         <div className="container-xl mt-3 text-center border border-dark">
           <div className="row font-weight-bold bg-dark text-light align-items-center py-2">
-            <div className="col-2" onClick={() => handleSort('datasetName')}>
+            <div className="col-2 btn text-light ms-2" onClick={() => handleSort('datasetName')}>
                 <SortColumnLabel title={"Dataset Name"} targetColumn={"datasetName"}/>
             </div>
-            <div className="col" onClick={() => handleSort('modelMetric')}>
+            <div className="col btn text-light" onClick={() => handleSort('modelMetric')}>
                 <SortColumnLabel title={"Metric"} targetColumn={"modelMetric"}/>
             </div>
-            <div className="col" onClick={() => handleSort('modelPath')}>
+            <div className="col btn text-light" onClick={() => handleSort('modelPath')}>
                 <SortColumnLabel title={"Path"} targetColumn={"modelPath"}/>
             </div>
-            <div className="col" onClick={() => handleSort('trainingLoss')}>
+            <div className="col btn text-light" onClick={() => handleSort('trainingLoss')}>
                 <SortColumnLabel title={"Training Loss"} targetColumn={"trainingLoss"}/>
             </div>
-            <div className="col" onClick={() => handleSort('validationLoss')}>
+            <div className="col btn text-light" onClick={() => handleSort('validationLoss')}>
                 <SortColumnLabel title={"Validation Loss"} targetColumn={"validationLoss"}/>
             </div>
-            <div className="col-2" onClick={() => handleSort('runDatetime')}>
+            <div className="col-2 btn text-light" onClick={() => handleSort('runDatetime')}>
                 <SortColumnLabel title={"Run Datetime"} targetColumn={"runDatetime"}/>
             </div>
             <div className="col-2">Notes</div>
@@ -200,7 +228,7 @@ function FilterModelsGrid() {
           {loading && <div className='my-3'><Loading/></div>}
           {!loading && error && <div className="alert alert-danger mt-3" role="alert">Error fetching models, please try again later {error.message}</div>}
           {!loading && !error && models.length > 0 ? (
-            <ModelsGrid models={models} toggleFavoriteUpdate={toggleFavoriteUpdate}/>
+            <ModelsGrid models={models} toggleFavoriteUpdate={toggleFavoriteUpdate} deleteModel={deleteModel}/>
           ) : !loading && !error && (
             <div>No models to display</div>
           )}
