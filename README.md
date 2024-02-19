@@ -5,9 +5,7 @@ This web application provides a platform for viewing, adding, and managing machi
 
 ## Features
 - **Add ML Models**: Users can add new ML model entries with details such as dataset name, run datetime, model metric, model path, training and validation loss, notes, and a favorite flag.
-- **View Models**: A comprehensive view of all models is available, with the option to filter by favorites.
-- **Interactive UI**: The application boasts a stylish and interactive user interface, enhancing user experience.
-- **Model Management**: (Optional) Features for editing, deleting, sorting, and filtering models enhance usability and functionality.
+- **View Models**: A comprehensive view of all models is available, with options to filter and sort by model fields.
 
 ## Technical Stack
 - **Front-end**: React, Redux, Bootstrap
